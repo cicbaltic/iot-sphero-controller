@@ -1,0 +1,27 @@
+{
+  "name": "sprk-rspi",
+  "version": "1.0.0",
+  "description": "Sphero controller app on Raspberry Pi.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://hub.jazz.net/git/simonas88/sprk-rspi"
+  },
+  "keywords": [
+    "sphero",
+    "raspberry",
+    "pi",
+    "pi",
+    "rpi",
+    "rasp"
+  ],
+  "author": "simonas88",
+  "license": "ISC",
+  "dependencies": {
+    "ibmiotf": "^0.1.1",
+    "sphero": "^0.3.0"
+  }
+}
