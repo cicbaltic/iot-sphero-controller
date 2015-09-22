@@ -1,10 +1,14 @@
 var Client = require("ibmiotf").IotfDevice;
 var sphero = require("sphero");
-var orb = sphero("/dev/rfcomm0");
-    orb.connect();
+//var orb = sphero("/dev/rfcomm1");
+//    orb.connect();
+
+var orb2 = sphero("/dev/rfcomm0");
+    orb2.connect();
+
 var rollInterval;
 
-function rollForTime(speed, direction, time) {
+function rollForTime(orb, speed, direction, time) {
     if (rollInterval) {
         clearInterval(rollInterval);
         orb.roll(0, direction);
