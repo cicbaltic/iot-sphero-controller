@@ -25,20 +25,40 @@ for (var i = 0; i < btConnections.length; i++) {
 }
 
 // connect to activeSpheros
+
 for (var i = 0; i < orbs.length; i++) {
     try {
         var j = i;
         orbs[j].connect(function() {
             console.log("connected to an orb on: " + btConnections[j]);
-            orbs[j]["timeout"] = 5;
-            //rollForTime(orbs[0], 90, 270, 500);
-            //eval("rollForTime(orbs[0], 90, 270, 500)");
+            var btData;
+            orbs[j].getBluetoothInfo(function(err, data) {
+                var mac = "";
+                btData = data.data;
+                for (var i = 16; i < 28; i++) {
+                    mac += String.fromCharCode(btData[i]).toUpperCase();
+                }
+                orbs[j]["macAddress"] = mac;
+            });
         });
     } catch (e) {
         console.log("errors while connecting to orbs");
         console.log(e);
     }
 }
+
+setTimeout(function() {
+    console.log(orbs[0].macAddress);
+}, 5000);
+
+// creates table for pairing spheros to userNames
+var spheroHash = {};
+function addPlayer(name) {
+    var currPlayers = Object.keys(spheroHash);
+    for (var i = 0; i < currPlayers.length; i++) {
+        //if
+    }
+};
 
 var rollInterval;
 
@@ -89,13 +109,21 @@ deviceClient.connect();
 //
 // });
 
+function getSpheroMacs(orbs) {
+    var macs = [];
+    for (var i = 0; i < orbs.length; i++) {
+        macs.push(orbs[i]["macAddress"]);
+    }
+    return macs;
+};
+
 deviceClient.on("command", function (commandName,format,payload,topic) {
     console.log("got command: " + commandName);
     console.log("got: ");
     console.log("\tformat: " + format);
     console.log("\tpayload: " + payload);
     console.log("\ttopic: " + topic);
-    if (commandName == "cmd") {
+    if (commandName == "roll") {
         try {
             var funct = JSON.parse(payload)["function"];
             deviceClient.publish("activeSpheros", "json", "{'moved': 'correct'}");
@@ -106,15 +134,19 @@ deviceClient.on("command", function (commandName,format,payload,topic) {
         }
     } else if (commandName == "getActiveSpheros") {
         try {
-            deviceClient.publish("activeSpheros", "json", JSON.stringify(orbs));
+            deviceClient.publish("activeSpheros", "json", JSON.stringify(getSpheroMacs(orbs)));
         } catch (e) {
             console.log("Got error message while tryin to list active spheros");
             console.log(e);
         };
+    } else if (commandName == "pairToSphero" ) {
+
     } else {
         console.log("no comprende");
     }
 });
+
+
 
 /*
 Cylon.robot({
