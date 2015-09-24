@@ -1,10 +1,46 @@
 var Client = require("ibmiotf").IotfDevice;
 var sphero = require("sphero");
-//var orb = sphero("/dev/rfcomm1");
-//    orb.connect();
+var fs = require("fs");
 
-var orb2 = sphero("/dev/rfcomm0");
-    orb2.connect();
+
+// scan for connected bluetooth devices
+var btConnections = [];
+var files = fs.readdirSync("/dev");
+for(var i = 0; i <= files.length; i++) {
+    var file = String(files[i]);
+    if (file.substring(0, 6) == "rfcomm") {
+        btConnections.push(file);
+    }
+};
+
+console.log(btConnections.length);
+
+// instantiate sphero objects
+var orbs = [];
+for (var i = 0; i < btConnections.length; i++) {
+    try {
+        //console.log(btConnections[i]);
+        var orb = sphero("/dev/" + btConnections[i]);
+        orbs.push(orb);
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+// connect to activeSpheros
+for (var i = 0; i < orbs.length; i++) {
+    try {
+        orbs[i].connect(function() {
+            console.log(i);
+            console.log("connected to an orb on..." + btConnections[i]);
+            //rollForTime(orbs[0], 90, 270, 500);
+            //eval("rollForTime(orbs[0], 90, 270, 500)");
+        });
+    } catch (e) {
+        console.log("errors while connecting to orbs");
+        console.log(e);
+    }
+}
 
 var rollInterval;
 
@@ -57,13 +93,26 @@ deviceClient.connect();
 
 deviceClient.on("command", function (commandName,format,payload,topic) {
     console.log("got command: " + commandName);
-    console.log("got payload: " + payload);
-    try {
-        var funct = JSON.parse(payload)["function"];
-        eval(funct);
-    } catch (e) {
-        console.log("Got error message while tryin to parse command: ");
-        console.log(e)
+    console.log("got: ");
+    console.log("\tformat: " + format);
+    console.log("\tpayload: " + payload);
+    console.log("\ttopic: " + topic);
+    if (commandName == "function") {
+        try {
+            var funct = JSON.parse(payload)["function"];
+            eval(funct);
+        } catch (e) {
+            console.log("Got error message while tryin to parse command: ");
+            console.log(e)
+        }
+    }
+    if (commandName == "getActiveSpheros") {
+        console.log(orbs.length);
+        try {
+            deviceClient.publish("activeSpheros", "json", JSON.stringify(orbs));
+        } catch (e) {
+            console.log("Got error message while tryin to list active spheros");console.log(e)
+        };
     }
 });
 

@@ -21,6 +21,7 @@
   "author": "simonas88",
   "license": "ISC",
   "dependencies": {
+    "async": "^1.4.2",
     "ibmiotf": "^0.1.1",
     "sphero": "^0.3.0"
   }
