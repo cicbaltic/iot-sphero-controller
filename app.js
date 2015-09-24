@@ -13,13 +13,10 @@ for(var i = 0; i <= files.length; i++) {
     }
 };
 
-console.log(btConnections.length);
-
 // instantiate sphero objects
 var orbs = [];
 for (var i = 0; i < btConnections.length; i++) {
     try {
-        //console.log(btConnections[i]);
         var orb = sphero("/dev/" + btConnections[i]);
         orbs.push(orb);
     } catch (e) {
@@ -30,9 +27,10 @@ for (var i = 0; i < btConnections.length; i++) {
 // connect to activeSpheros
 for (var i = 0; i < orbs.length; i++) {
     try {
-        orbs[i].connect(function() {
-            console.log(i);
-            console.log("connected to an orb on..." + btConnections[i]);
+        var j = i;
+        orbs[j].connect(function() {
+            console.log("connected to an orb on: " + btConnections[j]);
+            orbs[j]["timeout"] = 5;
             //rollForTime(orbs[0], 90, 270, 500);
             //eval("rollForTime(orbs[0], 90, 270, 500)");
         });
@@ -97,22 +95,24 @@ deviceClient.on("command", function (commandName,format,payload,topic) {
     console.log("\tformat: " + format);
     console.log("\tpayload: " + payload);
     console.log("\ttopic: " + topic);
-    if (commandName == "function") {
+    if (commandName == "cmd") {
         try {
             var funct = JSON.parse(payload)["function"];
+            deviceClient.publish("activeSpheros", "json", "{'moved': 'correct'}");
             eval(funct);
         } catch (e) {
             console.log("Got error message while tryin to parse command: ");
             console.log(e)
         }
-    }
-    if (commandName == "getActiveSpheros") {
-        console.log(orbs.length);
+    } else if (commandName == "getActiveSpheros") {
         try {
             deviceClient.publish("activeSpheros", "json", JSON.stringify(orbs));
         } catch (e) {
-            console.log("Got error message while tryin to list active spheros");console.log(e)
+            console.log("Got error message while tryin to list active spheros");
+            console.log(e);
         };
+    } else {
+        console.log("no comprende");
     }
 });
 
