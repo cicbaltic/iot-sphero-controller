@@ -22,6 +22,8 @@
   "license": "ISC",
   "dependencies": {
     "async": "^1.4.2",
+    "cylon": "^1.2.0",
+    "cylon-ble": "^0.8.0",
     "ibmiotf": "^0.1.1",
     "sphero": "^0.3.0"
   }

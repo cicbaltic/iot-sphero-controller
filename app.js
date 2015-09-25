@@ -1,7 +1,8 @@
 var Client = require("ibmiotf").IotfDevice;
 var sphero = require("sphero");
 var fs = require("fs");
-
+// map containing sphero mac address and orb object connection
+var spheroHash = {};
 
 // scan for connected bluetooth devices
 var btConnections = [];
@@ -12,6 +13,7 @@ for(var i = 0; i <= files.length; i++) {
         btConnections.push(file);
     }
 };
+console.log("Active Bt conns: " + btConnections);
 
 // instantiate sphero objects
 var orbs = [];
@@ -25,44 +27,45 @@ for (var i = 0; i < btConnections.length; i++) {
 }
 
 // connect to activeSpheros
-
 for (var i = 0; i < orbs.length; i++) {
-    try {
-        var j = i;
-        orbs[j].connect(function() {
-            console.log("connected to an orb on: " + btConnections[j]);
-            var btData;
-            orbs[j].getBluetoothInfo(function(err, data) {
-                var mac = "";
-                btData = data.data;
-                for (var i = 16; i < 28; i++) {
-                    mac += String.fromCharCode(btData[i]).toUpperCase();
-                }
-                orbs[j]["macAddress"] = mac;
-            });
-        });
-    } catch (e) {
-        console.log("errors while connecting to orbs");
-        console.log(e);
-    }
+    var orb = orbs[i];
+    connectOrb(orb);
 }
 
-setTimeout(function() {
-    console.log(orbs[0].macAddress);
-}, 5000);
+function connectOrb(orb) {
+    orb.connect(function(err, data) {
+        getOrbMac(orb);
+    })
+};
+
+function getOrbMac(orb) {
+    var btData;
+    orb.getBluetoothInfo(function(err, data) {
+        var mac = "";
+        btData = data.data;
+        for (var i = 16; i < 28; i++) {
+            mac += String.fromCharCode(btData[i]).toUpperCase();
+        }
+        orb["macAddress"] = mac;
+        hashMac(mac, orb);
+        console.log("connected to an orb on: " + orb.connection.conn + ", by the mac of: " + orb['macAddress']);
+    });
+};
 
 // creates table for pairing spheros to userNames
-var spheroHash = {};
-function addPlayer(name) {
-    var currPlayers = Object.keys(spheroHash);
-    for (var i = 0; i < currPlayers.length; i++) {
-        //if
+function hashMac(mac, orb) {
+    if(!spheroHash.hasOwnProperty(mac)) {
+        spheroHash[mac] = orb;
     }
 };
 
-var rollInterval;
+function rollForTime(mac, speed, direction, time) {
+    var orb = spheroHash[mac];
+    var rollInterval;
+    rollForTimeInner(orb, speed, direction, time);
+}
 
-function rollForTime(orb, speed, direction, time) {
+function rollForTimeInner(orb, speed, direction, time) {
     if (rollInterval) {
         clearInterval(rollInterval);
         orb.roll(0, direction);
@@ -82,6 +85,11 @@ function rollForTime(orb, speed, direction, time) {
         }, time);
     }
 };
+
+function rollForTime(mac, speed, direction, time) {
+    var orb = spheroHash[mac];
+    orb.roll(speed, direction);
+}
 
 //
 var config = {
