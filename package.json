@@ -25,6 +25,9 @@
     "cylon": "^1.2.0",
     "cylon-ble": "^0.8.0",
     "ibmiotf": "^0.1.1",
+    "johnny-five": "^0.8.92",
+    "noble": "^1.1.0",
+    "raspi-io": "^4.0.0",
     "sphero": "^0.3.0"
   }
 }

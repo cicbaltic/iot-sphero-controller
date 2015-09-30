@@ -1,6 +1,7 @@
 var Client = require("ibmiotf").IotfDevice;
 var sphero = require("sphero");
 var fs = require("fs");
+//var buttonControler = require('./button');
 // map containing sphero mac address and orb object connection
 var spheroHash = {};
 
@@ -18,12 +19,8 @@ console.log("Active Bt conns: " + btConnections);
 // instantiate sphero objects
 var orbs = [];
 for (var i = 0; i < btConnections.length; i++) {
-    try {
-        var orb = sphero("/dev/" + btConnections[i]);
-        orbs.push(orb);
-    } catch (e) {
-        console.log(e);
-    }
+    var orb = sphero("/dev/" + btConnections[i]);
+    orbs.push(orb);
 }
 
 // connect to activeSpheros
@@ -34,7 +31,7 @@ for (var i = 0; i < orbs.length; i++) {
 
 function connectOrb(orb) {
     orb.connect(function(err, data) {
-        getOrbMac(orb);
+    getOrbMac(orb);
     })
 };
 
@@ -59,10 +56,18 @@ function hashMac(mac, orb) {
     }
 };
 
-function rollForTime(mac, speed, direction, time) {
+exports.rollForTime = function(mac, speed, direction, time) {
     var orb = spheroHash[mac];
     var rollInterval;
     rollForTimeInner(orb, speed, direction, time);
+}
+
+function calibrate(mac) {
+    var orb = spheroHash[mac];
+    orb.startCalibration();
+    setTimeout(function() {
+        orb.finishCalibration();
+    }, 5000);
 }
 
 function rollForTimeInner(orb, speed, direction, time) {
@@ -140,6 +145,9 @@ deviceClient.on("command", function (commandName,format,payload,topic) {
             console.log("Got error message while tryin to parse command: ");
             console.log(e)
         }
+    } else if (commandName == "calibrate") {
+        var funct = JSON.parse(payload)["function"];
+        eval(funct);
     } else if (commandName == "getActiveSpheros") {
         try {
             deviceClient.publish("activeSpheros", "json", JSON.stringify(getSpheroMacs(orbs)));
