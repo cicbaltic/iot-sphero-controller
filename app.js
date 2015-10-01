@@ -19,19 +19,35 @@ console.log("Active Bt conns: " + btConnections);
 // instantiate sphero objects
 var orbs = [];
 for (var i = 0; i < btConnections.length; i++) {
-    var orb = sphero("/dev/" + btConnections[i]);
-    orbs.push(orb);
+    connectSerialPort(btConnections[i]);
 }
 
-// connect to activeSpheros
-for (var i = 0; i < orbs.length; i++) {
-    var orb = orbs[i];
-    connectOrb(orb);
+// // connect to activeSpheros
+// for (var i = 0; i < orbs.length; i++) {
+//     var orb = orbs[i];
+//     connectOrb(orb);
+// }
+
+function disconnectSphero(mac) {
+    var orb = spheroHash["mac"];
+    var i = 0;
+}
+
+function connectSerialPort(port) {
+    orbs.push(
+        sphero(
+            (port.indexOf("dev") == -1) ? ("/dev/" + port) : (port)
+        )
+    );
+    connectOrb(orbs[orbs.length - 1]);
 }
 
 function connectOrb(orb) {
     orb.connect(function(err, data) {
-    getOrbMac(orb);
+        getOrbMac(orb);
+        orb.setInactivityTimeout(3600, function(err, data) {
+            console.log( "setting inactivity " + ( String(err) || String(data) ) );
+        });
     })
 };
 
@@ -71,23 +87,27 @@ function calibrate(mac) {
 }
 
 function rollForTimeInner(orb, speed, direction, time) {
-    if (rollInterval) {
-        clearInterval(rollInterval);
-        orb.roll(0, direction);
-    }
-    if (time > 1000) {
-        rollInterval = setInterval(function() {
-            orb.roll(speed, direction);
-        }, 500);
-        setTimeout(function() {
+    try {
+        if (rollInterval) {
             clearInterval(rollInterval);
             orb.roll(0, direction);
-        }, time);
-    } else {
-        orb.roll(speed, direction);
-        setTimeout(function() {
-            orb.roll(0, direction);
-        }, time);
+        }
+        if (time > 1000) {
+            rollInterval = setInterval(function() {
+                orb.roll(speed, direction);
+            }, 500);
+            setTimeout(function() {
+                clearInterval(rollInterval);
+                orb.roll(0, direction);
+            }, time);
+        } else {
+            orb.roll(speed, direction);
+            setTimeout(function() {
+                orb.roll(0, direction);
+            }, time);
+        }
+    } catch (e) {
+        console.log("uh oh, we're in trouble");
     }
 };
 
@@ -138,16 +158,24 @@ deviceClient.on("command", function (commandName,format,payload,topic) {
     console.log("\ttopic: " + topic);
     if (commandName == "roll") {
         try {
-            var funct = JSON.parse(payload)["function"];
+            var parameters = JSON.parse(payload)["params"];
             deviceClient.publish("activeSpheros", "json", "{'moved': 'correct'}");
-            eval(funct);
+            rollForTime(parameters["mac"], parameters["speed"], parameters["direction"], parameters["time"]);
         } catch (e) {
             console.log("Got error message while tryin to parse command: ");
-            console.log(e)
+            console.log(e);
+            try {
+                var commPort = spheroHash[parameters["mac"]].connection.conn;
+                disconnectSphero(parameters["mac"]);
+                connectSerialPort(commPort);
+            } catch (e) {
+                console.log("error while trying to catch error");
+                console.log(e);
+            }
         }
     } else if (commandName == "calibrate") {
-        var funct = JSON.parse(payload)["function"];
-        eval(funct);
+        var parameters = JSON.parse(payload)["params"];
+        calibrate(parameters["mac"]);
     } else if (commandName == "getActiveSpheros") {
         try {
             deviceClient.publish("activeSpheros", "json", JSON.stringify(getSpheroMacs(orbs)));

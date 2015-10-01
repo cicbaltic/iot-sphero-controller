@@ -9,6 +9,9 @@ killbtprocess() {
     fi
 }
 
+killbtprocess $1 &
+killbtprocess $2 &
+
 connectOrb() {
     HCICON="$(hcitool con | grep $1)"
 
@@ -18,7 +21,7 @@ connectOrb() {
         if [ -n "$HCICON" ]
             then
             echo Sphero $1 connected
-            sleep 5
+            sleep 10
             HCICON="$(hcitool con | grep $1)"
             #CON=""
         else
