@@ -1,5 +1,5 @@
 #!/bin/bash
-#bluez-test-serial -i hci0 68:86:E7:04:DC:7E | 68:86:E7:04:98:35
+#bluez-test-serial -i hci0 68:86:E7:04:DC:7E 68:86:E7:04:98:35
 
 killbtprocess() {
     BTPROC_INTERNAL="$(ps aux | grep "bluez-test-serial -i hci0 $1" | grep -v grep | awk "NR==1{printf \$2}")"

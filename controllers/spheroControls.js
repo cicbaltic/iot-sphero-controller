@@ -11,6 +11,11 @@ var rollInterval;
 //     rollForTimeInner(orb, speed, direction, time);
 // }
 
+function setColor(mac, rgb) {
+    macOrb[mac].color(rgb, function() {
+        console.log("Colors set to: " + JSON.stringify(rgb));
+    });
+}
 
 function rollForTime(mac, speed, direction, time) {
     try {
@@ -65,5 +70,6 @@ function rollForTimeInner(orb, speed, direction, time) {
 module.exports = {
     rollForTime: rollForTime,
     calibrate: calibrate,
-    macOrb: macOrb
+    macOrb: macOrb,
+    setColor: setColor
 }

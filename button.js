@@ -12,12 +12,13 @@ board.on('ready', function() {
   var button = new five.Button('P1-15');
 
   redLed.off();
+  blueLed.off();
 
   button.on("press", function() {
       console.log("button pressed");
       blueLed.on();
       redLed.off();
-      rollForTime("6886E7049835", 90, 0, 1500);
+      //rollForTime("6886E7049835", 90, 0, 1500);
 
   });
 

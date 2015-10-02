@@ -42,7 +42,7 @@ function getPort(mac) {
         var arr2 = String(arr[i]).split(/ /g);
         var innerMac = arr2[3].replace(/:/g, "");
         if (String(mac) === String(innerMac)) {
-            return arr[i][0];
+            return arr2[0].substring(0, arr2[0].length - 1);
         }
     }
     return false;
@@ -58,7 +58,6 @@ function connectSpheroOnPort(port) {
     var newOrb = createOrb(port);
     var mac = getMac(port);
     if (mac === false) {
-        console.log("cia");
         return;
     } else {
         macOrb[mac] = newOrb;
