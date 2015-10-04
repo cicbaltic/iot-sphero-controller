@@ -1,8 +1,4 @@
-var spheroConnect = require("./connect");
 var sphero = require("sphero");
-
-var macOrb = spheroConnect.connectAllSpheros();
-
 var rollInterval;
 
 // function rollForTime(mac, speed, direction, time) {
@@ -11,15 +7,16 @@ var rollInterval;
 //     rollForTimeInner(orb, speed, direction, time);
 // }
 
-function setColor(mac, rgb) {
-    macOrb[mac].color(rgb, function() {
+function setColor(orb, rgb) {
+    console.log("attempt color change");
+    orb.color(rgb, function() {
         console.log("Colors set to: " + JSON.stringify(rgb));
     });
 }
 
-function rollForTime(mac, speed, direction, time) {
+function rollForTime(orb, speed, direction, time) {
     try {
-        macOrb[mac].roll(speed, direction);
+        orb.roll(speed, direction);
     } catch (e) {
         console.log("Error trying to move an orb, ");
         console.log(e);
@@ -27,8 +24,7 @@ function rollForTime(mac, speed, direction, time) {
     }
 }
 
-function calibrate(mac) {
-    var orb = macOrb[mac];
+function calibrate(orb) {
     try {
         orb.startCalibration();
         setTimeout(function() {
@@ -37,7 +33,6 @@ function calibrate(mac) {
     } catch (e) {
         console.log("Error trying to calibrate an orb, ");
         console.log(e);
-        spheroConnect.reconnectSpheroOnMac(mac);
     }
 }
 
@@ -70,6 +65,5 @@ function rollForTimeInner(orb, speed, direction, time) {
 module.exports = {
     rollForTime: rollForTime,
     calibrate: calibrate,
-    macOrb: macOrb,
     setColor: setColor
 }

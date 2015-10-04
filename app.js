@@ -1,6 +1,6 @@
-var sphero = require("./controllers/spheroControls");
+var spheroControls = require("./controllers/spheroControls");
+var spheroConnect = require("./controllers/connect");
 var ButtonControl = require("./controllers/button");
-
 
 var Client = require("ibmiotf").IotfDevice;
 
@@ -16,7 +16,7 @@ var deviceClient = new Client(config);
 deviceClient.connect();
 var button = new ButtonControl(deviceClient);
 
-var macOrb = sphero.macOrb;
+var macOrb = {};
 
 
 deviceClient.on("command", function (commandName,format,payload,topic) {
@@ -28,7 +28,7 @@ deviceClient.on("command", function (commandName,format,payload,topic) {
     if (commandName == "roll") {
         var parameters = JSON.parse(payload)["params"];
         try {
-            sphero.rollForTime(parameters["mac"], parameters["speed"], parameters["direction"], parameters["time"]);
+            spheroControls.rollForTime(macOrb[parameters["mac"]], parameters["speed"], parameters["direction"], parameters["time"]);
             deviceClient.publish("spheroStatus", "json", "{\"action\": \"rolling\"}");
         } catch (e) {
             console.log("your throw sucks");
@@ -36,7 +36,7 @@ deviceClient.on("command", function (commandName,format,payload,topic) {
         }
     } else if (commandName == "calibrate") {
         var parameters = JSON.parse(payload)["params"];
-        sphero.calibrate(parameters["mac"]);
+        spheroControls.calibrate(macOrb[parameters["mac"]]);
     } else if (commandName == "getActiveSpheros") {
         try {
             deviceClient.publish("activeSpheros", "json", JSON.stringify(Object.keys(macOrb)));
@@ -45,7 +45,13 @@ deviceClient.on("command", function (commandName,format,payload,topic) {
             console.log(e);
         };
     } else if (commandName == "pairToSphero" ) {
-
+        var parameters = JSON.parse(payload)["params"];
+        console.log(parameters);
+        var mac = parameters["mac"];
+        macOrb[mac] = spheroConnect.connectSpheroOnMac(mac);
+        setTimeout(function() {
+            spheroControls.setColor(macOrb[mac], parameters["rgb"]);
+        }, 1000);
     } else {
         console.log("no comprende");
     }

@@ -1,6 +1,9 @@
 #!/bin/bash
 #bluez-test-serial -i hci0 68:86:E7:04:DC:7E 68:86:E7:04:98:35
 
+G="68:86:E7:04:DC:7E"
+B="68:86:E7:04:98:35"
+
 killbtprocess() {
     BTPROC_INTERNAL="$(ps aux | grep "bluez-test-serial -i hci0 $1" | grep -v grep | awk "NR==1{printf \$2}")"
     if [ -n "$BTPROC_INTERNAL" ]
@@ -9,8 +12,8 @@ killbtprocess() {
     fi
 }
 
-killbtprocess $1 &
-killbtprocess $2 &
+killbtprocess $G &
+killbtprocess $B &
 
 connectOrb() {
     HCICON="$(hcitool con | grep $1)"
@@ -34,5 +37,5 @@ connectOrb() {
     done
 }
 
-connectOrb $1 &
-connectOrb $2 &
+connectOrb $G &
+connectOrb $B &
