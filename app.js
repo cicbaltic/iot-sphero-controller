@@ -20,7 +20,7 @@ var button = new ButtonControl(deviceClient);
 var spheroConnect = new SpheroConnect();
 var macOrb = {};
 
-spheroConnect.connectAllSpheros();
+//roConnect.connectAllSpheros();
 
 spheroConnect.on("sphero_connected", function(mac, orb) {
     console.log("Sphero %s connected.", mac);

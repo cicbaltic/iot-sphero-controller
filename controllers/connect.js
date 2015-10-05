@@ -98,7 +98,7 @@ function SpheroConnectController() {
             });
             delete this.orbsByMac[mac];
             this.orbsByMac[mac] = {orb: orb, mac: mac, ttl: 0};
-            return this.orbsByMac[mac];
+            return this.orbsByMac[mac].orb;
         } else {
             return null;
         }
