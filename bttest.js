@@ -3,6 +3,7 @@ var btSerial = new (require('bluetooth-serial-port')).BluetoothSerialPort();
 connect("68:86:E7:04:98:35");
 connect("68:86:E7:04:DC:7E");
 
+
 function connect(address) {
     var bt = new (require('bluetooth-serial-port')).BluetoothSerialPort();
     bt.findSerialPortChannel(address, function(channel) {
@@ -22,7 +23,7 @@ function connect(address) {
             setTimeout(function(){bt.close();}, 600000
             );
             // close the connection when you're ready
-            bt.close();
+            //bt.close();
         }, function (error) {
             console.log('cannot connect %s', address);
             console.log(error);

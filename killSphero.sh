@@ -1,20 +1,14 @@
 #!/bin/bash
-# 68:86:E7:04:98:35   68:86:E7:04:DC:7E
-MAC="68:86:E7:04:98:35"
-CMD="$(ps aux | grep $MAC | grep -v grep | awk "NR==1{printf \$2}")"
-until [ -z "$CMD" ]
-do
-    CMD="$(ps aux | grep $MAC | grep -v grep | awk "NR==1{printf \$2}")"
-    kill $CMD
-done
+killThis() {
+    echo "killing process $1..."
+    kill $1
+    ID="$(ps aux | grep 'bluez-test-serial\|gortScript' | grep -v grep | awk "NR==1{printf \$2}")"
+    if [ -n "$ID" ]
+        then
+        killThis $ID
+    else
+        echo "done"
+    fi
+}
 
-MAC="68:86:E7:04:DC:7E"
-CMD="$(ps aux | grep $MAC | grep -v grep | awk "NR==1{printf \$2}")"
-until [ -z "$CMD" ]
-do
-    CMD="$(ps aux | grep $MAC | grep -v grep | awk "NR==1{printf \$2}")"
-    kill $CMD
-done
-
-
-#"bluez-test-serial -i hci0 68:86:E7:04:98:35"
+killThis "$(ps aux | grep 'bluez-test-serial\|gortScript' | grep -v grep | awk "NR==1{printf \$2}")"

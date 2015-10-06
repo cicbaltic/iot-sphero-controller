@@ -1,41 +1,69 @@
 #!/bin/bash
-#bluez-test-serial -i hci0 68:86:E7:04:DC:7E 68:86:E7:04:98:35
 
-G="68:86:E7:04:DC:7E"
-B="68:86:E7:04:98:35"
+#fully kills this script
+trap ./killSphero.sh INT
 
-killbtprocess() {
-    BTPROC_INTERNAL="$(ps aux | grep "bluez-test-serial -i hci0 $1" | grep -v grep | awk "NR==1{printf \$2}")"
-    if [ -n "$BTPROC_INTERNAL" ]
+#attemps to connect to a sphero
+connect() {
+    # takes mac as parameter
+        GO=true
+        CMD="bluez-test-serial -i hci0 $1" #68:86:E7:04:DC:7E
+        stdbuf -oL $CMD 2>&1 | {
+            while IFS= read -r line && "$GO" = true
+            do
+                lineA="$(echo "$line" | awk "{printf \$1}")"
+                if [ "$lineA" == "Connected" ]
+                    then
+                    GO=false
+                fi
+            done
+            if [ "$GO" == false ]
+                then
+                report=true
+                while [ "$report" == true ]
+                do
+                    report=$(isConnected $1)
+                    sleep 5
+                    echo "Sphero $1 is connected."
+                done
+            fi
+            ID="$(ps aux | grep "bluez-test-serial -i hci0 $1" | grep -v grep | awk "NR==1{printf \$2}")"
+            if [ -n "$ID" ]
+                then
+                kill $ID
+            fi
+        }
+        echo "Sphero $1 disconnected."
+}
+
+#checks whether a sphero is connected
+isConnected() {
+    # takes mac as parameter
+    RES="$(l2ping -c 1 -t 1 -s 50 $1 2>&1 | awk "NR==2{printf \$1}")"
+    HCI="$(hcitool con | grep $1 | grep "MASTER AUTH ENCRYPT")"
+    if [ "$RES" == "50" ]
         then
-        kill $BTPROC_INTERNAL
+        if [ -n "$HCI" ]
+            then
+            echo true
+        else
+            echo false
+        fi
+    else
+        echo false
     fi
 }
 
-killbtprocess $G &
-killbtprocess $B &
-
-connectOrb() {
-    HCICON="$(hcitool con | grep $1)"
-
-    echo entering loop...
+#main loop function
+main() {
     while [ true ]
     do
-        if [ -n "$HCICON" ]
-            then
-            echo Sphero $1 connected
-            sleep 10
-            HCICON="$(hcitool con | grep $1)"
-            #CON=""
-        else
-            echo Sphero $1 not connected
-            killbtprocess $1
-            bluez-test-serial -i hci0 $1 2>&1 &
-            sleep 3
-            HCICON="$(hcitool con | grep $1)"
-        fi
+        echo "Attempting connection to Sphero $1... "
+        connect $1 #68:86:E7:04:DC:7E
+        sleep 5
     done
 }
 
-connectOrb $G &
-connectOrb $B &
+#invocation for two spheros
+main "68:86:E7:04:DC:7E" &
+main "68:86:E7:04:98:35"
