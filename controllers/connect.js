@@ -165,7 +165,6 @@ function SpheroConnectController() {
 
     this.timer = setInterval(function() {
         var ports = self.scanBtPorts();
-        console.log("Pinging all available Sphero's: %s", ports);
 
         var pingWrapper = function(orb_info) {
             try {
@@ -193,7 +192,6 @@ function SpheroConnectController() {
         for (var i in ports) {
             var port = ports[i];
             var mac = self.getMac(port);
-            console.log("Rescan: " + mac + " " + port);
             if (!self.orbsByMac[mac] || self.orbsByMac[mac] === {}) {
                 console.log("%s:%s not connected. Issueing connection", mac, port);
                 self.connectSpheroOnPort(port);
