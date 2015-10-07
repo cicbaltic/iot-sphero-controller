@@ -3,6 +3,7 @@
 
 var sphero = require("sphero");
 var util = require("util");
+//var buffer = require('buffer');
 
 var EventEmitter = require("events").EventEmitter;
 
@@ -81,6 +82,13 @@ function SpheroController() {
             console.log(String(e));
         }
     };
+
+    this.startCollisionDetection = function startCollisionDetection(orb, mac) {
+        orb.detectCollisions();
+        orb.on("collision", function(data) {
+            self.emit("collision", data, mac);
+        })
+    }
 
 }
 

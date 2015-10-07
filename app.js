@@ -43,6 +43,7 @@ spheroConnect.on("sphero_connected", function(mac, orb) {
     console.log("Sphero %s connected.", mac);
     macOrb[mac] = orb;
     rspiState.spheros[mac] = "connected";
+    spheroControls.startCollisionDetection(macOrb[mac], mac);
 });
 spheroConnect.on("sphero_disconnected", function(mac, orb) {
     console.log("Sphero %s disconnected.", mac);
@@ -54,7 +55,11 @@ spheroConnect.on("sphero_disconnected", function(mac, orb) {
 spheroControls.on("rolled", function(orb) {
     var mac = spheroConnect.getMac(orb.connection.conn);
     rspiState.spheros[mac] = "connected";
-})
+});
+spheroControls.on("collision", function(data, mac) {
+    console.log("collision detected on Sphero " + mac);
+    console.log(JSON.stringify(data));
+});
 
 deviceClient.on("command", function (commandName, format, payload, topic) {
     console.log("got command: " + commandName);
