@@ -48,7 +48,7 @@ deviceClient.on("command", function (commandName, format, payload, topic) {
         }
     } else if (commandName == "calibrate") {
         var parameters = JSON.parse(payload)["params"];
-        spheroControls.calibrate(macOrb[parameters["mac"]]);
+        spheroControls.calibrateEnd(macOrb[parameters["mac"]]);
     } else if (commandName == "getActiveSpheros") {
         try {
             deviceClient.publish("activeSpheros", "json", JSON.stringify(Object.keys(macOrb)));
@@ -65,6 +65,7 @@ deviceClient.on("command", function (commandName, format, payload, topic) {
         if (macOrb[mac]) {
             macOrb[mac].on("ready", function(){
                 spheroControls.setColor(macOrb[mac], parameters["rgb"]);
+                spheroControls.calibrateBegin(macOrb[mac]);
             });
         } else {
             var errorload = {};

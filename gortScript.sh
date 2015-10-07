@@ -22,9 +22,9 @@ connect() {
                 report=true
                 while [ "$report" == true ]
                 do
-                    report=$(isConnected $1)
-                    sleep 5
                     echo "Sphero $1 is connected."
+                    sleep 10
+                    report=$(isConnected $1)
                 done
             fi
             ID="$(ps aux | grep "bluez-test-serial -i hci0 $1" | grep -v grep | awk "NR==1{printf \$2}")"

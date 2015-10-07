@@ -24,14 +24,20 @@ function rollForTime(orb, speed, direction, time) {
     }
 }
 
-function calibrate(orb) {
+function calibrateBegin(orb) {
     try {
         orb.startCalibration();
-        setTimeout(function() {
-            orb.finishCalibration();
-        }, 5000);
     } catch (e) {
-        console.log("Error trying to calibrate an orb, ");
+        console.log("Error trying to start calibration: ");
+        console.log(e);
+    }
+}
+
+function calibrateEnd(orb) {
+    try {
+        orb.finishCalibration();
+    } catch (e) {
+        console.log("Error trying to finish calibration: ");
         console.log(e);
     }
 }
@@ -64,6 +70,7 @@ function rollForTimeInner(orb, speed, direction, time) {
 
 module.exports = {
     rollForTime: rollForTime,
-    calibrate: calibrate,
+    calibrateBegin: calibrateBegin,
+    calibrateEnd: calibrateEnd,
     setColor: setColor
 }
