@@ -1,4 +1,4 @@
-"use strict"
+"use strict";
 /*jshint node:true*/
 
 var sphero = require("sphero");
@@ -16,7 +16,7 @@ var EventEmitter = require("events").EventEmitter;
 function SpheroController() {
     var self = this;
 
-    this.rollInterval;
+    this.rollInterval = undefined;
 
     EventEmitter.call(this);
 
@@ -25,7 +25,7 @@ function SpheroController() {
         orb.color(rgb, function() {
             console.log("Colors set to: " + JSON.stringify(rgb));
         });
-    }
+    };
 
     this.rollForTime = function rollForTime(orb, speed, direction, time) {
         try {
@@ -36,7 +36,7 @@ function SpheroController() {
             console.log(e);
             //spheroConnect.reconnectSpheroOnMac(mac);
         }
-    }
+    };
 
     this.calibrateBegin = function calibrateBegin(orb) {
         try {
@@ -45,7 +45,7 @@ function SpheroController() {
             console.log("Error trying to start calibration: ");
             console.log(e);
         }
-    }
+    };
 
     this.calibrateEnd = function calibrateEnd(orb) {
         try {
@@ -54,7 +54,7 @@ function SpheroController() {
             console.log("Error trying to finish calibration: ");
             console.log(e);
         }
-    }
+    };
 
     this.rollForTimeInner = function rollForTimeInner(orb, speed, direction, time) {
         try {
@@ -87,18 +87,11 @@ function SpheroController() {
         orb.detectCollisions();
         orb.on("collision", function(data) {
             self.emit("collision", data, mac);
-        })
-    }
+        });
+    };
 
 }
 
 util.inherits(SpheroController, EventEmitter);
 
 module.exports = SpheroController;
-
-// module.exports = {
-//     rollForTime: rollForTime,
-//     calibrateBegin: calibrateBegin,
-//     calibrateEnd: calibrateEnd,
-//     setColor: setColor
-// }
