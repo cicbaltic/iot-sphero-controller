@@ -106,15 +106,17 @@ function SpheroConnectController() {
 
     // Disconnects a sphero with a specified mac address
     this.disconnectSpheroOnMac = function disconnectSpheroOnMac(mac) {
+        var orb = self.orbsByMac[mac].orb;
+        delete self.orbsByMac[mac];
+        self.emit("sphero_disconnected", mac);
         try {
-            this.orbsByMac[mac].orb.disconnect(function(err, data) {
-                delete self.orbsByMac[mac];
-                self.emit("sphero_disconnected", mac);
+            orb.disconnect(function(err, data) {
+              if (err) {
+                console.error("ERROR: Unable to disconnect: " + mac + ": " + err);
+              }
             });
-            return true;
         } catch (e) {
-            console.log("No sphero connected with a mac address of: " + mac);
-            return false;
+            console.error("ERROR: Unable to disconnect: " + mac + ": " + e);
         }
     };
 
@@ -164,8 +166,6 @@ function SpheroConnectController() {
     };
 
     this.timer = setInterval(function() {
-        var ports = self.scanBtPorts();
-
         var pingWrapper = function(orb_info) {
             try {
                 orb_info.orb.ping(function(err, data) {
@@ -189,6 +189,22 @@ function SpheroConnectController() {
             }
         };
 
+
+        var ports = self.scanBtPorts();
+        for (var j in self.orbsByMac) {
+          var found = false;
+          for (var i in ports) {
+            if (j === self.getMac(ports[i])) {
+              found = true;
+            }
+          }
+          if (!found) {
+            console.log("Removing disconnected sphero " + j);
+            self.disconnectSpheroOnMac(j);
+          }
+        }
+
+        var ports = self.scanBtPorts();
         for (var i in ports) {
             var port = ports[i];
             var mac = self.getMac(port);
@@ -204,5 +220,6 @@ function SpheroConnectController() {
 
 // Inherit functions from `EventEmitter`'s prototype
 util.inherits(SpheroConnectController, EventEmitter);
+
 
 module.exports = SpheroConnectController;
