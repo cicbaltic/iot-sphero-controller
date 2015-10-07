@@ -96,6 +96,7 @@ deviceClient.on("command", function (commandName, format, payload, topic) {
     } else if (commandName == "calibrate") {
         var parameters = JSON.parse(payload).params;
         spheroControls.calibrateEnd(macOrb[parameters.mac]);
+
         rspiState.spheros[parameters.mac] = "calibrated";
     } else if (commandName == "getActiveSpheros") {
         try {
@@ -119,12 +120,12 @@ deviceClient.on("command", function (commandName, format, payload, topic) {
             var errorload = {};
             errorload.type = "pairToSpheroError";
             errorload.mac = mac;
-            console.error("ERROR: Could not connect to Sphero %s.", mac)
+            console.error("ERROR: Could not connect to Sphero %s.", mac);
             deviceClient.publish("errors", "json", JSON.stringify(errorload));
         }
-    } else if (commandName == "requestStatus") {
-        deviceClient.publish("spheroStatus", "json", JSON.stringify(rspiState));
+    } else if (commandName == "getStatus") {
+        changeSpheroState();
     } else {
-        console.log("no comprende");
+        console.error("ERROR: Uknown command received:" + payload);
     }
 });
