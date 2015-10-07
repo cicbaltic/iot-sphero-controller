@@ -18,7 +18,7 @@ var rspiState = {
 // your production system should auto-restart the app
 // this is the Node.js way
 process.on('uncaughtException', function(err) {
-  console.error('uncaughtException:', err.message);
+  console.error('ERROR: uncaughtException:', err.message);
   console.error(err.stack);
   //process.exit(1);
 });
@@ -45,6 +45,7 @@ function changeSpheroState(mac, state) {
     rspiState.spheros[mac] = state;
   }
 
+  console.log(rspiState);
   deviceClient.publish("status", "json", JSON.stringify(rspiState));
 }
 

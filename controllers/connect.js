@@ -178,7 +178,8 @@ function SpheroConnectController() {
                         if (orb_info.ttl > 5)
                             self.disconnectSpheroOnMac(orb_info.mac);
                     } else {
-                        console.log("Sphero %s is fine", orb_info.mac);
+                      if (orb_info.ttl !== 0)
+                        console.log("Sphero %s came online", orb_info.mac);
                     }
                 });
             } catch (err) {
@@ -187,7 +188,7 @@ function SpheroConnectController() {
                 if (orb_info.ttl > 5)
                     self.disconnectSpheroOnMac(orb_info.mac);
             }
-        }
+        };
 
         for (var i in ports) {
             var port = ports[i];
