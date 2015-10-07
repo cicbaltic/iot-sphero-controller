@@ -85,7 +85,7 @@ deviceClient.on("command", function (commandName, format, payload, topic) {
   console.log("\tformat: " + format);
   console.log("\tpayload: " + payload);
   console.log("\ttopic: " + topic + "\nend command.\n");
-  
+
   if (commandName == "roll") {
     var parameters = JSON.parse(payload).params;
     try {
@@ -123,6 +123,7 @@ deviceClient.on("command", function (commandName, format, payload, topic) {
         changeSpheroState(mac, "disconnected");
       }
   } else if (commandName == "getStatus") {
+      console.log("GetStatus command received.")
       changeSpheroState();
   } else {
       console.error("ERROR: Uknown command received:" + payload);
