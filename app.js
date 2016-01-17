@@ -1,131 +1,151 @@
-var SpheroControls = require("./controllers/spheroControls");
-var SpheroConnect = require("./controllers/connect");
+'use strict';
 
-var ButtonControl = require("./controllers/button");
+var YAML = require('yamljs');
+var _ = require('underscore');
+var Iot = require('./lib/iot');
+var Sphero = require('./lib/sphero');
+var Behaviour = require('./lib/behaviour');
 
-var Client = require("ibmiotf").IotfDevice;
+var bunyan = require('bunyan');
 
-var rspiState = {
-    "rasp": "offline", // online/offline
-    "spheros": {
-        //"sphero0": "disconnected", // diconnected/connected/in_calibration/calibrated/rolling
-        //"sphero1": "disconnected", // diconnected/connected/in_calibration/calibrated/rolling
-        //...
-    }
-};
+const cluster = require('cluster');
 
-// always capture, log and exit on uncaught exceptions
-// your production system should auto-restart the app
-// this is the Node.js way
-process.on('uncaughtException', function(err) {
-  console.error('ERROR: uncaughtException:', err.message);
-  console.error(err.stack);
-  //process.exit(1);
-});
+if (cluster.isMaster) {
+  this.logger = bunyan.createLogger({
+    name: 'main'
+  });
+  var argv = require('minimist')(process.argv.slice(2));
 
-var config = {
-  "org" :         "wjhtfb",
-  "id" :          "sphero-g",
-  "type" :        "sphero",
-  "auth-method" : "token",
-  "auth-token" :  "spheroYraZalias"
-};
-
-var deviceClient = new Client(config);
-deviceClient.connect();
-var button = new ButtonControl(deviceClient);
-
-var spheroConnect = new SpheroConnect();
-var spheroControls = new SpheroControls();
-
-var macOrb = {};
-
-function changeSpheroState(mac, state) {
-  if (mac) {
-    rspiState.spheros[mac] = state;
+  if (argv.help) {
+    console.log('Sphero controller app connected to IBM IoT Foundation.');
+    console.log('Options:');
+    console.log('--config {file} - configuration YAML file. The format is as follows:');
+    console.log('spheros:');
+    console.log('  - name: friendly device name');
+    console.log('    mac: device mac address, i.e. 68:86:E7:04:98:35');
+    console.log('    variant: device type to use: sphero - for real sphero device, sim - for simulated');
+    console.log('    behaviour: devices behaviour strategy to use: none - for real sphero device, conway - Conways game of life');
+    console.log('    iot:');
+    console.log('      variant: device type to use: iot - for real iot connectivity, log - for logging only, sim - for simulation');
+    console.log('      org: IoT Foundation organization id');
+    console.log('      type: Device type');
+    console.log('      id: Device Id');
+    console.log('      auth-method: authorization method/password, use "token" for IoT Foundation');
+    console.log('      auth-token: device authorization token');
+    process.exit(1);
   }
 
-  console.log(rspiState);
-  deviceClient.publish("status", "json", JSON.stringify(rspiState));
+  if (!argv.config) {
+    console.error('Please provide the config file with --config option.');
+    process.exit(1);
+  }
+
+  var config = YAML.load(argv.config);
+  this.logger.info('Config: ', config);
+
+  var workers = {};
+
+  function fork(sphero_config) {
+    var w = cluster.fork({
+      'config': JSON.stringify(sphero_config)
+    });
+    workers[w.process.pid] = sphero_config;
+  };
+
+  // Fork workers.
+  _.each(config.spheros, (sphero_config, key) => {
+    fork(sphero_config);
+  });
+
+  cluster.on('exit', (worker, code, signal) => {
+    this.logger.error(`worker ${worker.process.pid} ${signal || code} died`);
+    fork(workers[worker.process.pid]);
+  });
+} else {
+  var config = JSON.parse(process.env.config);
+  var logger = bunyan.createLogger({
+    name: `worker-${config.name}`
+  });
+
+  logger.info('Config: ', config);
+  var spheroDevice = Sphero(config);
+  var iotDevice = Iot(config.name, config.iot);
+  var behaviour = Behaviour(spheroDevice, config);
+
+  // Handle events from sphero
+  spheroDevice
+    .on("connected", () => {
+      behaviour.start();
+      spheroDevice.streamAccelerometer(1);
+      spheroDevice.startCollisionDetection();
+      spheroDevice.stopOnDisconnect(true);
+      spheroDevice.streamOdometer(1);
+    })
+    .on('accelerometer', (data) => {
+      iotDevice.publish('accelerometer', data);
+    })
+    .on('collision', (data) => {
+      iotDevice.publish('collision', data);
+    })
+    .on('accelerometer', (data) => {
+      iotDevice.publish('accelerometer', data);
+    })
+    .on('odometer', (data) => {
+      iotDevice.publish('odometer', data);
+    })
+    .on('roll', (data) => {
+      iotDevice.publish('roll', data);
+    })
+    .on('status_changed', (status) => {
+      iotDevice.publish('status', {
+        status: spheroDevice.getStatus()
+      });
+    })
+    .on('color', (color) => {
+      iotDevice.publish('color', color);
+    });
+
+  // handle commands from IoT
+  iotDevice
+    .on('connected', () => {
+      iotDevice.publish('status', {
+        'status': spheroDevice.getStatus()
+      });
+    })
+    .on('roll', (payload) => {
+      spheroDevice.roll(payload.speed, payload.direction, payload.time);
+    })
+    .on('calibrate_start', () => {
+      spheroDevice.startCalibration();
+      iotDevice.publish("calibrating", {});
+      setTimeout(function() {
+        spheroDevice.finishCalibration();
+        iotDevice.publish('status', {
+          status: 'ready'
+        });
+      }, 5000);
+    })
+    .on('calibrate_end', (payload) => {
+      spheroDevice.finishCalibration();
+    })
+    .on('status', (device, payload) => {
+      iotDevice.publish('status', {
+        'status': spheroDevice.getStatus()
+      });
+    })
+    .on('set_color', (device, payload) => {
+      spheroDevice.color(payload);
+    })
+    .on('sleep', () => {
+      spheroDevice.sleep();
+    })
+    .on('stop', () => {
+      spheroDevice.stop();
+    })
+    .on('macro', (data) => {
+      spheroDevice.macro(data);
+    });
+
+  spheroDevice.connect();
+  iotDevice.connect();
 }
-
-deviceClient.on("connect", function(err, data) {
-  rspiState.rasp = "online";
-  console.log(rspiState);
-});
-
-spheroConnect.on("sphero_connected", function(mac, orb) {
-  console.log("Sphero %s connected.", mac);
-
-  macOrb[mac] = orb;
-  changeSpheroState(mac, "connected");
-
-  spheroControls.startCollisionDetection(macOrb[mac], mac);
-});
-
-spheroConnect.on("sphero_disconnected", function(mac, orb) {
-  console.log("Sphero %s disconnected.", mac);
-  delete macOrb[mac];
-  changeSpheroState(mac, "disconnected");
-});
-
-spheroControls.on("rolled", function(orb) {
-  var mac = spheroConnect.getMac(orb.connection.conn);
-  changeSpheroState(mac, "connected");
-});
-
-spheroControls.on("collision", function(data, mac) {
-  console.log("collision detected on Sphero " + mac);
-  console.log(JSON.stringify(data));
-});
-
-deviceClient.on("command", function (commandName, format, payload, topic) {
-  console.log("got command: " + commandName);
-  console.log("got: ");
-  console.log("\tformat: " + format);
-  console.log("\tpayload: " + payload);
-  console.log("\ttopic: " + topic + "\nend command.\n");
-
-  if (commandName == "roll") {
-    var parameters = JSON.parse(payload).params;
-    try {
-      spheroControls.rollForTime(macOrb[parameters.mac], parameters.speed, parameters.direction, parameters.time);
-      rspiState.spheros[parameters.mac] = "rolling";
-    } catch (e) {
-      console.error("ERROR: your throw sucks");
-      console.error(e);
-  }
-  } else if (commandName == "calibrate") {
-    var parameters = JSON.parse(payload).params;
-    spheroControls.calibrateEnd(macOrb[parameters.mac]);
-
-    rspiState.spheros[parameters.mac] = "calibrated";
-  } else if (commandName == "getActiveSpheros") {
-      try {
-          deviceClient.publish("activeSpheros", "json", JSON.stringify(Object.keys(macOrb)));
-      } catch (e) {
-          console.error("ERROR: Got error message while tryin to list active spheros");
-          console.error(e);
-      }
-  } else if (commandName == "pairToSphero" ) {
-      var parameters = JSON.parse(payload).params;
-      console.log(parameters);
-      var mac = parameters.mac;
-      macOrb[mac] = spheroConnect.connectSpheroOnMac(mac);
-      if (macOrb[mac]) {
-          macOrb[mac].on("ready", function(){
-              spheroControls.setColor(macOrb[mac], parameters.rgb);
-              spheroControls.calibrateBegin(macOrb[mac]);
-              rspiState.spheros[parameters.mac] = "in_calibration";
-          });
-      } else {
-        console.error("ERROR: Could not connect to Sphero %s.", mac);
-        changeSpheroState(mac, "disconnected");
-      }
-  } else if (commandName == "getStatus") {
-      console.log("GetStatus command received.")
-      changeSpheroState();
-  } else {
-      console.error("ERROR: Uknown command received:" + payload);
-  }
-});

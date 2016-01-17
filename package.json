@@ -1,10 +1,10 @@
 {
-  "name": "sprk-rspi",
+  "name": "iot-sphero-controller",
   "version": "1.0.0",
-  "description": "Sphero controller app on Raspberry Pi.",
+  "description": "Sphero controller app connected to IBM IoT Foundation",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app.js --config config-sim.yml | bunyan"
   },
   "repository": {
     "type": "git",
@@ -12,22 +12,23 @@
   },
   "keywords": [
     "sphero",
-    "raspberry",
-    "pi",
-    "pi",
-    "rpi",
-    "rasp"
+    "iot",
+    "bluemix",
+    "ibm"
   ],
-  "author": "simonas88",
+  "author": "gytis.raciukaitis@lt.ibm.com",
   "license": "ISC",
+  "engines": {
+    "node": ">=4.1"
+  },
   "dependencies": {
-    "async": "^1.4.2",
-    "cylon": "^1.2.0",
-    "cylon-ble": "^0.8.0",
-    "ibmiotf": "^0.1.1",
-    "johnny-five": "^0.8.92",
-    "noble": "^1.1.0",
-    "raspi-io": "^4.0.0",
-    "sphero": "^0.3.0"
+    "bluetooth-serial-port": "^1.2.6",
+    "bunyan": "^1.5.1",
+    "ibmiotf": "^0.2.2",
+    "minimist": "^1.2.0",
+    "serialport": "^2.0.6",
+    "sphero": "noxxious/sphero.js",
+    "underscore": "^1.8.3",
+    "yamljs": "^0.2.4"
   }
 }

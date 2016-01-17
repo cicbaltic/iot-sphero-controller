@@ -1,0 +1,12 @@
+spheros:
+  - name: SIM
+    mac: 68:86:E7:04:98:35
+    variant: sim
+    behaviour: conway
+    iot:
+      variant: log
+      org: test
+      type: sphero
+      id: test
+      auth-method: token
+      auth-token: test
