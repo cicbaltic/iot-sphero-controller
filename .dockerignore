@@ -1,0 +1,6 @@
+*~
+.DS_Store/
+.vagrant
+coverage
+node_modules
+npm-debug.log
