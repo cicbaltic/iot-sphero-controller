@@ -1,0 +1,1085 @@
+[{
+	"id": "6e8896b.ab507e8",
+	"type": "ibmiot",
+	"z": "599dea69.0e119c",
+	"name": "Neo"
+}, {
+	"id": "d43d462a.495638",
+	"type": "ibmiot in",
+	"z": "4ad91188.62ae58",
+	"authentication": "apiKey",
+	"apiKey": "6e8896b.ab507e8",
+	"inputType": "evt",
+	"deviceId": "",
+	"applicationId": "",
+	"deviceType": "+",
+	"eventType": "+",
+	"commandType": "",
+	"format": "json",
+	"name": "All events",
+	"service": "registered",
+	"allDevices": true,
+	"allApplications": "",
+	"allDeviceTypes": true,
+	"allEvents": true,
+	"allCommands": "",
+	"allFormats": true,
+	"x": 158,
+	"y": 55,
+	"wires": [
+		["401da7ed.884f28"]
+	]
+}, {
+	"id": "68d95fc3.3c0c78",
+	"type": "debug",
+	"z": "4ad91188.62ae58",
+	"name": "",
+	"active": false,
+	"console": "false",
+	"complete": "payload",
+	"x": 395,
+	"y": 96,
+	"wires": []
+}, {
+	"id": "cb4fc326.da1ef8",
+	"type": "ibmiot in",
+	"z": "4ad91188.62ae58",
+	"authentication": "apiKey",
+	"apiKey": "6e8896b.ab507e8",
+	"inputType": "evt",
+	"deviceId": "sphero1",
+	"applicationId": "",
+	"deviceType": "sphero",
+	"eventType": "color",
+	"commandType": "",
+	"format": "json",
+	"name": "color",
+	"service": "registered",
+	"allDevices": true,
+	"allApplications": "",
+	"allDeviceTypes": "",
+	"allEvents": "",
+	"allCommands": "",
+	"allFormats": "",
+	"x": 152,
+	"y": 94,
+	"wires": [
+		["68d95fc3.3c0c78"]
+	]
+}, {
+	"id": "f4307c6f.28af8",
+	"type": "ibmiot in",
+	"z": "4ad91188.62ae58",
+	"authentication": "apiKey",
+	"apiKey": "6e8896b.ab507e8",
+	"inputType": "evt",
+	"deviceId": "sphero1",
+	"applicationId": "",
+	"deviceType": "sphero",
+	"eventType": "accelerometer",
+	"commandType": "",
+	"format": "json",
+	"name": "accelerometer",
+	"service": "registered",
+	"allDevices": true,
+	"allApplications": "",
+	"allDeviceTypes": "",
+	"allEvents": "",
+	"allCommands": "",
+	"allFormats": "",
+	"x": 171,
+	"y": 134,
+	"wires": [
+		["3fd25208.52889e"]
+	]
+}, {
+	"id": "baf0f7b9.b9cb78",
+	"type": "ibmiot in",
+	"z": "4ad91188.62ae58",
+	"authentication": "apiKey",
+	"apiKey": "6e8896b.ab507e8",
+	"inputType": "evt",
+	"deviceId": "sphero1",
+	"applicationId": "",
+	"deviceType": "sphero",
+	"eventType": "collision",
+	"commandType": "",
+	"format": "json",
+	"name": "collision",
+	"service": "registered",
+	"allDevices": true,
+	"allApplications": "",
+	"allDeviceTypes": "",
+	"allEvents": "",
+	"allCommands": "",
+	"allFormats": "",
+	"x": 151,
+	"y": 173,
+	"wires": [
+		["cddcfba0.506f2"]
+	]
+}, {
+	"id": "c7cb3a50.c946c8",
+	"type": "ibmiot in",
+	"z": "4ad91188.62ae58",
+	"authentication": "apiKey",
+	"apiKey": "6e8896b.ab507e8",
+	"inputType": "evt",
+	"deviceId": "sphero1",
+	"applicationId": "",
+	"deviceType": "sphero",
+	"eventType": "odometer",
+	"commandType": "",
+	"format": "json",
+	"name": "odometer",
+	"service": "registered",
+	"allDevices": true,
+	"allApplications": "",
+	"allDeviceTypes": "",
+	"allEvents": "",
+	"allCommands": "",
+	"allFormats": "",
+	"x": 156,
+	"y": 212,
+	"wires": [
+		["5a2557a8.ffc3a8"]
+	]
+}, {
+	"id": "401da7ed.884f28",
+	"type": "debug",
+	"z": "4ad91188.62ae58",
+	"name": "",
+	"active": false,
+	"console": "false",
+	"complete": "payload",
+	"x": 395,
+	"y": 55,
+	"wires": []
+}, {
+	"id": "3fd25208.52889e",
+	"type": "debug",
+	"z": "4ad91188.62ae58",
+	"name": "",
+	"active": false,
+	"console": "false",
+	"complete": "payload",
+	"x": 397,
+	"y": 134,
+	"wires": []
+}, {
+	"id": "5a2557a8.ffc3a8",
+	"type": "debug",
+	"z": "4ad91188.62ae58",
+	"name": "",
+	"active": false,
+	"console": "false",
+	"complete": "payload",
+	"x": 395,
+	"y": 215,
+	"wires": []
+}, {
+	"id": "cddcfba0.506f2",
+	"type": "debug",
+	"z": "4ad91188.62ae58",
+	"name": "",
+	"active": false,
+	"console": "false",
+	"complete": "payload",
+	"x": 395,
+	"y": 175,
+	"wires": []
+}, {
+	"id": "c651bf48.bd8cc",
+	"type": "ibmiot in",
+	"z": "4ad91188.62ae58",
+	"authentication": "apiKey",
+	"apiKey": "6e8896b.ab507e8",
+	"inputType": "evt",
+	"deviceId": "sphero1",
+	"applicationId": "",
+	"deviceType": "sphero",
+	"eventType": "roll",
+	"commandType": "",
+	"format": "json",
+	"name": "roll",
+	"service": "registered",
+	"allDevices": true,
+	"allApplications": "",
+	"allDeviceTypes": "",
+	"allEvents": "",
+	"allCommands": "",
+	"allFormats": "",
+	"x": 154,
+	"y": 255,
+	"wires": [
+		["82a31b84.8707b8"]
+	]
+}, {
+	"id": "82a31b84.8707b8",
+	"type": "debug",
+	"z": "4ad91188.62ae58",
+	"name": "",
+	"active": false,
+	"console": "false",
+	"complete": "payload",
+	"x": 393,
+	"y": 258,
+	"wires": []
+}, {
+	"id": "e3596480.814868",
+	"type": "ibmiot in",
+	"z": "4ad91188.62ae58",
+	"authentication": "apiKey",
+	"apiKey": "6e8896b.ab507e8",
+	"inputType": "evt",
+	"deviceId": "sphero1",
+	"applicationId": "",
+	"deviceType": "sphero",
+	"eventType": "status",
+	"commandType": "",
+	"format": "json",
+	"name": "status",
+	"service": "registered",
+	"allDevices": true,
+	"allApplications": "",
+	"allDeviceTypes": "",
+	"allEvents": "",
+	"allCommands": "",
+	"allFormats": "",
+	"x": 152,
+	"y": 335,
+	"wires": [
+		["31763cfe.2311dc"]
+	]
+}, {
+	"id": "31763cfe.2311dc",
+	"type": "debug",
+	"z": "4ad91188.62ae58",
+	"name": "",
+	"active": false,
+	"console": "false",
+	"complete": "payload",
+	"x": 391,
+	"y": 338,
+	"wires": []
+}, {
+	"id": "23226bb9.8366a4",
+	"type": "ibmiot in",
+	"z": "4ad91188.62ae58",
+	"authentication": "apiKey",
+	"apiKey": "6e8896b.ab507e8",
+	"inputType": "evt",
+	"deviceId": "sphero1",
+	"applicationId": "",
+	"deviceType": "sphero",
+	"eventType": "turn",
+	"commandType": "",
+	"format": "json",
+	"name": "turn",
+	"service": "registered",
+	"allDevices": true,
+	"allApplications": "",
+	"allDeviceTypes": "",
+	"allEvents": "",
+	"allCommands": "",
+	"allFormats": "",
+	"x": 154,
+	"y": 295,
+	"wires": [
+		["8cde811a.b4d82"]
+	]
+}, {
+	"id": "8cde811a.b4d82",
+	"type": "debug",
+	"z": "4ad91188.62ae58",
+	"name": "",
+	"active": false,
+	"console": "false",
+	"complete": "payload",
+	"x": 393,
+	"y": 298,
+	"wires": []
+}, {
+	"id": "4c17f71f.cf97b",
+	"type": "comment",
+	"z": "4ad91188.62ae58",
+	"name": "Events API",
+	"info": "",
+	"x": 273,
+	"y": 20,
+	"wires": []
+}, {
+	"id": "17d802c1.27203d",
+	"type": "ibmiot out",
+	"z": "4ad91188.62ae58",
+	"authentication": "apiKey",
+	"apiKey": "6e8896b.ab507e8",
+	"outputType": "cmd",
+	"deviceId": "sphero2",
+	"deviceType": "sphero",
+	"eventCommandType": "status",
+	"format": "json",
+	"data": "{}",
+	"name": "get_status",
+	"service": "registered",
+	"x": 544,
+	"y": 461,
+	"wires": []
+}, {
+	"id": "eca5a8e7.33fe68",
+	"type": "inject",
+	"z": "4ad91188.62ae58",
+	"name": "",
+	"topic": "",
+	"payload": "",
+	"payloadType": "none",
+	"repeat": "",
+	"crontab": "",
+	"once": false,
+	"x": 137,
+	"y": 443,
+	"wires": [
+		["9e005a0b.e9cbe"]
+	]
+}, {
+	"id": "9e005a0b.e9cbe",
+	"type": "function",
+	"z": "4ad91188.62ae58",
+	"name": "sphero1",
+	"func": "var msg = { deviceId:\"sphero1\"};\nreturn msg;",
+	"outputs": 1,
+	"noerr": 0,
+	"x": 274,
+	"y": 443,
+	"wires": [
+		["de0b44d0.230ad"]
+	]
+}, {
+	"id": "c0921703.0ffe88",
+	"type": "function",
+	"z": "4ad91188.62ae58",
+	"name": "sphero2",
+	"func": "var msg = { deviceId:\"sphero2\"};\nreturn msg;",
+	"outputs": 1,
+	"noerr": 0,
+	"x": 273,
+	"y": 482,
+	"wires": [
+		["de0b44d0.230ad"]
+	]
+}, {
+	"id": "8dcb3811.f48bb",
+	"type": "ibmiot out",
+	"z": "4ad91188.62ae58",
+	"authentication": "apiKey",
+	"apiKey": "6e8896b.ab507e8",
+	"outputType": "cmd",
+	"deviceId": "sphero2",
+	"deviceType": "sphero",
+	"eventCommandType": "sleep",
+	"format": "json",
+	"data": "{}",
+	"name": "sleep",
+	"service": "registered",
+	"x": 533,
+	"y": 547,
+	"wires": []
+}, {
+	"id": "ca2a4c35.c35618",
+	"type": "inject",
+	"z": "4ad91188.62ae58",
+	"name": "",
+	"topic": "",
+	"payload": "",
+	"payloadType": "none",
+	"repeat": "",
+	"crontab": "",
+	"once": false,
+	"x": 139,
+	"y": 571,
+	"wires": [
+		["45bda2cf.02b39c"]
+	]
+}, {
+	"id": "b5d04f15.fe9bc8",
+	"type": "function",
+	"z": "4ad91188.62ae58",
+	"name": "sphero1",
+	"func": "var msg = { deviceId:\"sphero1\"};\nreturn msg;",
+	"outputs": 1,
+	"noerr": 0,
+	"x": 272,
+	"y": 523,
+	"wires": [
+		["e30b99b7.e15d98"]
+	]
+}, {
+	"id": "45bda2cf.02b39c",
+	"type": "function",
+	"z": "4ad91188.62ae58",
+	"name": "sphero2",
+	"func": "var msg = { deviceId:\"sphero2\"};\nreturn msg;",
+	"outputs": 1,
+	"noerr": 0,
+	"x": 272,
+	"y": 571,
+	"wires": [
+		["e30b99b7.e15d98"]
+	]
+}, {
+	"id": "a8b3f830.bda0d8",
+	"type": "inject",
+	"z": "4ad91188.62ae58",
+	"name": "",
+	"topic": "",
+	"payload": "",
+	"payloadType": "none",
+	"repeat": "",
+	"crontab": "",
+	"once": false,
+	"x": 138,
+	"y": 523,
+	"wires": [
+		["b5d04f15.fe9bc8"]
+	]
+}, {
+	"id": "b60a92e1.a8e9",
+	"type": "function",
+	"z": "4ad91188.62ae58",
+	"name": "sphero1",
+	"func": "function color() {\n return Math.floor(255*Math.random())\n}\n\nvar msg = { deviceId:\"sphero1\",\n            payload: {   \n                r:color(),\n                g:color(), \n                b:color()} \n          };\nreturn msg;",
+	"outputs": 1,
+	"noerr": 0,
+	"x": 272,
+	"y": 627,
+	"wires": [
+		["a18a3485.aae72"]
+	]
+}, {
+	"id": "3d4f4ca7.ec2a6c",
+	"type": "inject",
+	"z": "4ad91188.62ae58",
+	"name": "",
+	"topic": "",
+	"payload": "",
+	"payloadType": "none",
+	"repeat": "",
+	"crontab": "",
+	"once": false,
+	"x": 138,
+	"y": 672,
+	"wires": [
+		["9d3a8a1.08d77f8"]
+	]
+}, {
+	"id": "39324596.a5f762",
+	"type": "ibmiot out",
+	"z": "4ad91188.62ae58",
+	"authentication": "apiKey",
+	"apiKey": "6e8896b.ab507e8",
+	"outputType": "cmd",
+	"deviceId": "sphero2",
+	"deviceType": "sphero",
+	"eventCommandType": "set_color",
+	"format": "json",
+	"data": "{}",
+	"name": "set_color",
+	"service": "registered",
+	"x": 530,
+	"y": 647,
+	"wires": []
+}, {
+	"id": "9d3a8a1.08d77f8",
+	"type": "function",
+	"z": "4ad91188.62ae58",
+	"name": "sphero2",
+	"func": "function color() {\n return Math.floor(255*Math.random())\n}\n\nvar msg = { deviceId:\"sphero2\",\n            payload: {   \n                \"r\":color(),\n                \"g\":color(), \n                \"b\":color()\n            } \n          };\nreturn msg;",
+	"outputs": 1,
+	"noerr": 0,
+	"x": 273,
+	"y": 672,
+	"wires": [
+		["a18a3485.aae72"]
+	]
+}, {
+	"id": "58d20001.463498",
+	"type": "inject",
+	"z": "4ad91188.62ae58",
+	"name": "",
+	"topic": "",
+	"payload": "",
+	"payloadType": "none",
+	"repeat": "",
+	"crontab": "",
+	"once": false,
+	"x": 139,
+	"y": 627,
+	"wires": [
+		["b60a92e1.a8e9"]
+	]
+}, {
+	"id": "53f0c507.c65ed4",
+	"type": "inject",
+	"z": "4ad91188.62ae58",
+	"name": "",
+	"topic": "",
+	"payload": "",
+	"payloadType": "none",
+	"repeat": "",
+	"crontab": "",
+	"once": false,
+	"x": 137,
+	"y": 482,
+	"wires": [
+		["c0921703.0ffe88"]
+	]
+}, {
+	"id": "2a3ebe02.b67fe2",
+	"type": "function",
+	"z": "4ad91188.62ae58",
+	"name": "sphero1",
+	"func": "var msg = { deviceId:\"sphero1\",\n            payload: {},\n          };\nreturn msg;",
+	"outputs": 1,
+	"noerr": 0,
+	"x": 273,
+	"y": 714,
+	"wires": [
+		["52150e33.4c9ee8"]
+	]
+}, {
+	"id": "2cc3e52a.238dda",
+	"type": "inject",
+	"z": "4ad91188.62ae58",
+	"name": "",
+	"topic": "",
+	"payload": "",
+	"payloadType": "none",
+	"repeat": "",
+	"crontab": "",
+	"once": false,
+	"x": 136,
+	"y": 757,
+	"wires": [
+		["70c9c354.856d94"]
+	]
+}, {
+	"id": "f6d08b52.5598c",
+	"type": "ibmiot out",
+	"z": "4ad91188.62ae58",
+	"authentication": "apiKey",
+	"apiKey": "6e8896b.ab507e8",
+	"outputType": "cmd",
+	"deviceId": "sphero2",
+	"deviceType": "sphero",
+	"eventCommandType": "calibrate_start",
+	"format": "json",
+	"data": "{}",
+	"name": "calibrate_start",
+	"service": "registered",
+	"x": 540,
+	"y": 733,
+	"wires": []
+}, {
+	"id": "70c9c354.856d94",
+	"type": "function",
+	"z": "4ad91188.62ae58",
+	"name": "sphero2",
+	"func": "var msg = { deviceId:\"sphero2\",\n            payload: {} \n          };\nreturn msg;",
+	"outputs": 1,
+	"noerr": 0,
+	"x": 273,
+	"y": 757,
+	"wires": [
+		["52150e33.4c9ee8"]
+	]
+}, {
+	"id": "bcf0745d.28f65",
+	"type": "inject",
+	"z": "4ad91188.62ae58",
+	"name": "",
+	"topic": "",
+	"payload": "",
+	"payloadType": "none",
+	"repeat": "",
+	"crontab": "",
+	"once": false,
+	"x": 137,
+	"y": 714,
+	"wires": [
+		["2a3ebe02.b67fe2"]
+	]
+}, {
+	"id": "41743908.6de4f",
+	"type": "function",
+	"z": "4ad91188.62ae58",
+	"name": "sphero1",
+	"func": "var msg = { deviceId:\"sphero1\",\n            payload: {},\n          };\nreturn msg;",
+	"outputs": 1,
+	"noerr": 0,
+	"x": 273,
+	"y": 800,
+	"wires": [
+		["38bb57c6.6e574"]
+	]
+}, {
+	"id": "b2751f09.b3b438",
+	"type": "inject",
+	"z": "4ad91188.62ae58",
+	"name": "",
+	"topic": "",
+	"payload": "",
+	"payloadType": "none",
+	"repeat": "",
+	"crontab": "",
+	"once": false,
+	"x": 137,
+	"y": 841,
+	"wires": [
+		["e5076142.2b0c58"]
+	]
+}, {
+	"id": "929fce2c.cb2618",
+	"type": "ibmiot out",
+	"z": "4ad91188.62ae58",
+	"authentication": "apiKey",
+	"apiKey": "6e8896b.ab507e8",
+	"outputType": "cmd",
+	"deviceId": "sphero2",
+	"deviceType": "sphero",
+	"eventCommandType": "calibrate_end",
+	"format": "json",
+	"data": "{}",
+	"name": "calibrate_end",
+	"service": "registered",
+	"x": 540,
+	"y": 820,
+	"wires": []
+}, {
+	"id": "e5076142.2b0c58",
+	"type": "function",
+	"z": "4ad91188.62ae58",
+	"name": "sphero2",
+	"func": "var msg = { deviceId:\"sphero2\",\n            payload: {} \n          };\nreturn msg;",
+	"outputs": 1,
+	"noerr": 0,
+	"x": 273,
+	"y": 841,
+	"wires": [
+		["38bb57c6.6e574"]
+	]
+}, {
+	"id": "5134aaa5.30b404",
+	"type": "inject",
+	"z": "4ad91188.62ae58",
+	"name": "",
+	"topic": "",
+	"payload": "",
+	"payloadType": "none",
+	"repeat": "",
+	"crontab": "",
+	"once": false,
+	"x": 136,
+	"y": 800,
+	"wires": [
+		["41743908.6de4f"]
+	]
+}, {
+	"id": "17096818.b42418",
+	"type": "function",
+	"z": "4ad91188.62ae58",
+	"name": "sphero1",
+	"func": "var msg = { deviceId:\"sphero1\",\n            payload: {\n                speed:60, \n                direction:90, \n                time:10\n            },\n          };\nreturn msg;",
+	"outputs": 1,
+	"noerr": 0,
+	"x": 276,
+	"y": 887,
+	"wires": [
+		["e1d4f80c.3e0208"]
+	]
+}, {
+	"id": "ed01998b.ae9a1",
+	"type": "inject",
+	"z": "4ad91188.62ae58",
+	"name": "",
+	"topic": "",
+	"payload": "",
+	"payloadType": "none",
+	"repeat": "",
+	"crontab": "",
+	"once": false,
+	"x": 137,
+	"y": 930,
+	"wires": [
+		["159714b0.9749ab"]
+	]
+}, {
+	"id": "cc1044ce.456eb8",
+	"type": "ibmiot out",
+	"z": "4ad91188.62ae58",
+	"authentication": "apiKey",
+	"apiKey": "6e8896b.ab507e8",
+	"outputType": "cmd",
+	"deviceId": "sphero2",
+	"deviceType": "sphero",
+	"eventCommandType": "roll",
+	"format": "json",
+	"data": "{}",
+	"name": "roll",
+	"service": "registered",
+	"x": 524,
+	"y": 909,
+	"wires": []
+}, {
+	"id": "159714b0.9749ab",
+	"type": "function",
+	"z": "4ad91188.62ae58",
+	"name": "sphero2",
+	"func": "\nvar msg = { deviceId:\"sphero2\",\n            payload: {\n                speed:60, \n                direction:90, \n                time:10\n            },\n          };\nreturn msg;",
+	"outputs": 1,
+	"noerr": 0,
+	"x": 277,
+	"y": 930,
+	"wires": [
+		["e1d4f80c.3e0208"]
+	]
+}, {
+	"id": "f8a8f28e.294ba",
+	"type": "inject",
+	"z": "4ad91188.62ae58",
+	"name": "",
+	"topic": "",
+	"payload": "",
+	"payloadType": "none",
+	"repeat": "",
+	"crontab": "",
+	"once": false,
+	"x": 136,
+	"y": 887,
+	"wires": [
+		["17096818.b42418"]
+	]
+}, {
+	"id": "dbd38999.4d34f",
+	"type": "function",
+	"z": "4ad91188.62ae58",
+	"name": "sphero1",
+	"func": "var msg = { deviceId:\"sphero1\",\n            payload: {},\n          };\nreturn msg;",
+	"outputs": 1,
+	"noerr": 0,
+	"x": 277,
+	"y": 1053,
+	"wires": [
+		["3b34e949.9d72be"]
+	]
+}, {
+	"id": "231f2b37.da9c4c",
+	"type": "inject",
+	"z": "4ad91188.62ae58",
+	"name": "",
+	"topic": "",
+	"payload": "",
+	"payloadType": "none",
+	"repeat": "",
+	"crontab": "",
+	"once": false,
+	"x": 135,
+	"y": 1093,
+	"wires": [
+		["b78d99a8.558b"]
+	]
+}, {
+	"id": "37315136.a76f6e",
+	"type": "ibmiot out",
+	"z": "4ad91188.62ae58",
+	"authentication": "apiKey",
+	"apiKey": "6e8896b.ab507e8",
+	"outputType": "cmd",
+	"deviceId": "sphero2",
+	"deviceType": "sphero",
+	"eventCommandType": "stop",
+	"format": "json",
+	"data": "{}",
+	"name": "stop",
+	"service": "registered",
+	"x": 530,
+	"y": 1071,
+	"wires": []
+}, {
+	"id": "b78d99a8.558b",
+	"type": "function",
+	"z": "4ad91188.62ae58",
+	"name": "sphero2",
+	"func": "\nvar msg = { deviceId:\"sphero2\",\n            payload: {} \n          };\nreturn msg;",
+	"outputs": 1,
+	"noerr": 0,
+	"x": 278,
+	"y": 1093,
+	"wires": [
+		["3b34e949.9d72be"]
+	]
+}, {
+	"id": "e9fa05a3.6d19d8",
+	"type": "inject",
+	"z": "4ad91188.62ae58",
+	"name": "",
+	"topic": "",
+	"payload": "",
+	"payloadType": "none",
+	"repeat": "",
+	"crontab": "",
+	"once": false,
+	"x": 135,
+	"y": 1054,
+	"wires": [
+		["dbd38999.4d34f"]
+	]
+}, {
+	"id": "75e44542.796604",
+	"type": "comment",
+	"z": "4ad91188.62ae58",
+	"name": "Commands API",
+	"info": "",
+	"x": 378,
+	"y": 392,
+	"wires": []
+}, {
+	"id": "a18a3485.aae72",
+	"type": "json",
+	"z": "4ad91188.62ae58",
+	"name": "",
+	"x": 405,
+	"y": 646,
+	"wires": [
+		["39324596.a5f762"]
+	]
+}, {
+	"id": "de0b44d0.230ad",
+	"type": "json",
+	"z": "4ad91188.62ae58",
+	"name": "",
+	"x": 404,
+	"y": 461,
+	"wires": [
+		["17d802c1.27203d"]
+	]
+}, {
+	"id": "e30b99b7.e15d98",
+	"type": "json",
+	"z": "4ad91188.62ae58",
+	"name": "",
+	"x": 399,
+	"y": 548,
+	"wires": [
+		["8dcb3811.f48bb"]
+	]
+}, {
+	"id": "52150e33.4c9ee8",
+	"type": "json",
+	"z": "4ad91188.62ae58",
+	"name": "",
+	"x": 392,
+	"y": 734,
+	"wires": [
+		["f6d08b52.5598c"]
+	]
+}, {
+	"id": "38bb57c6.6e574",
+	"type": "json",
+	"z": "4ad91188.62ae58",
+	"name": "",
+	"x": 396,
+	"y": 820,
+	"wires": [
+		["929fce2c.cb2618"]
+	]
+}, {
+	"id": "e1d4f80c.3e0208",
+	"type": "json",
+	"z": "4ad91188.62ae58",
+	"name": "",
+	"x": 397,
+	"y": 909,
+	"wires": [
+		["cc1044ce.456eb8"]
+	]
+}, {
+	"id": "3b34e949.9d72be",
+	"type": "json",
+	"z": "4ad91188.62ae58",
+	"name": "",
+	"x": 404,
+	"y": 1071,
+	"wires": [
+		["37315136.a76f6e"]
+	]
+}, {
+	"id": "bb63c188.5c41f",
+	"type": "function",
+	"z": "4ad91188.62ae58",
+	"name": "sphero1",
+	"func": "var msg = { deviceId:\"sphero1\",\n            payload: {\n                direction:90\n            },\n          };\nreturn msg;",
+	"outputs": 1,
+	"noerr": 0,
+	"x": 273,
+	"y": 970,
+	"wires": [
+		["d4370597.4c3588"]
+	]
+}, {
+	"id": "8491b29e.025c48",
+	"type": "inject",
+	"z": "4ad91188.62ae58",
+	"name": "",
+	"topic": "",
+	"payload": "",
+	"payloadType": "none",
+	"repeat": "",
+	"crontab": "",
+	"once": false,
+	"x": 134,
+	"y": 1013,
+	"wires": [
+		["93b8730e.79de18"]
+	]
+}, {
+	"id": "8a65315e.041cc",
+	"type": "ibmiot out",
+	"z": "4ad91188.62ae58",
+	"authentication": "apiKey",
+	"apiKey": "",
+	"outputType": "cmd",
+	"deviceId": "sphero2",
+	"deviceType": "sphero",
+	"eventCommandType": "turn",
+	"format": "json",
+	"data": "{}",
+	"name": "turn",
+	"service": "registered",
+	"x": 521,
+	"y": 992,
+	"wires": []
+}, {
+	"id": "93b8730e.79de18",
+	"type": "function",
+	"z": "4ad91188.62ae58",
+	"name": "sphero2",
+	"func": "\nvar msg = { deviceId:\"sphero2\",\n            payload: {\n                direction:90\n            },\n          };\nreturn msg;",
+	"outputs": 1,
+	"noerr": 0,
+	"x": 274,
+	"y": 1013,
+	"wires": [
+		["d4370597.4c3588"]
+	]
+}, {
+	"id": "717f22e3.571324",
+	"type": "inject",
+	"z": "4ad91188.62ae58",
+	"name": "",
+	"topic": "",
+	"payload": "",
+	"payloadType": "none",
+	"repeat": "",
+	"crontab": "",
+	"once": false,
+	"x": 133,
+	"y": 970,
+	"wires": [
+		["bb63c188.5c41f"]
+	]
+}, {
+	"id": "d4370597.4c3588",
+	"type": "json",
+	"z": "4ad91188.62ae58",
+	"name": "",
+	"x": 394,
+	"y": 992,
+	"wires": [
+		["8a65315e.041cc"]
+	]
+}, {
+	"id": "1fa39666.aa69a2",
+	"type": "function",
+	"z": "4ad91188.62ae58",
+	"name": "sphero1",
+	"func": "var msg = { deviceId:\"sphero1\",\n            payload: {\n                accel:{\n                    stream: true,\n                    sps: 1\n                },\n                odor:{\n                    stream: true,\n                    sps: 1\n                },     \n            },\n          };\nreturn msg;",
+	"outputs": 1,
+	"noerr": 0,
+	"x": 275,
+	"y": 1138,
+	"wires": [
+		["a816af7f.1fc8f"]
+	]
+}, {
+	"id": "c5b421cd.99093",
+	"type": "inject",
+	"z": "4ad91188.62ae58",
+	"name": "",
+	"topic": "",
+	"payload": "",
+	"payloadType": "none",
+	"repeat": "",
+	"crontab": "",
+	"once": false,
+	"x": 133,
+	"y": 1178,
+	"wires": [
+		["f4ae16af.ac4318"]
+	]
+}, {
+	"id": "2d492cc.3682d54",
+	"type": "ibmiot out",
+	"z": "4ad91188.62ae58",
+	"authentication": "apiKey",
+	"apiKey": "",
+	"outputType": "cmd",
+	"deviceId": "sphero2",
+	"deviceType": "sphero",
+	"eventCommandType": "config",
+	"format": "json",
+	"data": "{}",
+	"name": "config",
+	"service": "registered",
+	"x": 528,
+	"y": 1156,
+	"wires": []
+}, {
+	"id": "f4ae16af.ac4318",
+	"type": "function",
+	"z": "4ad91188.62ae58",
+	"name": "sphero2",
+	"func": "\nvar msg = { deviceId:\"sphero2\",\n            payload: {} \n          };\nreturn msg;",
+	"outputs": 1,
+	"noerr": 0,
+	"x": 276,
+	"y": 1178,
+	"wires": [
+		["a816af7f.1fc8f"]
+	]
+}, {
+	"id": "d21f4e2.81f423",
+	"type": "inject",
+	"z": "4ad91188.62ae58",
+	"name": "",
+	"topic": "",
+	"payload": "",
+	"payloadType": "none",
+	"repeat": "",
+	"crontab": "",
+	"once": false,
+	"x": 133,
+	"y": 1139,
+	"wires": [
+		["1fa39666.aa69a2"]
+	]
+}, {
+	"id": "a816af7f.1fc8f",
+	"type": "json",
+	"z": "4ad91188.62ae58",
+	"name": "",
+	"x": 402,
+	"y": 1156,
+	"wires": [
+		["2d492cc.3682d54"]
+	]
+}]
