@@ -11,4 +11,5 @@ COPY . /usr/src/app
 RUN npm cache clean
 RUN npm install -d --production
 
-ENTRYPOINT [ "npm", "start" ]
+ENTRYPOINT [ "node", "app.js" ]
+CMD ["--config", "config-sim.yml", "|", "./node_modules/.bin/bunyan"]

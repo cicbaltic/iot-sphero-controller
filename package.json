@@ -4,11 +4,12 @@
   "description": "Sphero controller app connected to IBM IoT Foundation",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js --config config-sim.yml | bunyan"
+    "start": "node app.js --config config-sim.yml | bunyan",
+    "lint": "eslint ."
   },
   "repository": {
     "type": "git",
-    "url": "https://hub.jazz.net/git/simonas88/sprk-rspi"
+    "url": "https://hub.jazz.net/git/gytis.raciukaitis/iot-sphero-controller"
   },
   "keywords": [
     "sphero",
@@ -30,5 +31,8 @@
     "sphero": "noxxious/sphero.js",
     "underscore": "^1.8.3",
     "yamljs": "^0.2.4"
+  },
+  "devDependencies": {
+    "eslint": "1.10.3"
   }
 }
