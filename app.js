@@ -94,7 +94,7 @@ if (cluster.isMaster) {
 		.on('connected', () => {
 			behaviour.start();
 			spheroDevice.setPowerNotification(true);
-			spheroDevice.setBackLed(127);
+			spheroDevice.setBackLed(0);
 			spheroDevice.startCollisionDetection();
 			spheroDevice.stopOnDisconnect(true);
 		})
@@ -181,6 +181,11 @@ if (cluster.isMaster) {
 			if (data.collision) {
 				spheroDevice.streamOdometer(data.odor.stream, data.odor.sps);
 			}
+		})
+		.on('behaviour', (data) => {
+			behaviour.end();
+			behaviour = Behaviour(spheroDevice, data.behaviour);
+			behaviour.start();
 		})
 		.on('macro', (device, data) => {
 			spheroDevice.macro(data);
