@@ -4,7 +4,7 @@
   sudo: yes
   vars:
     nodejs_version: 5.x
-    gort_package: https://s3.amazonaws.com/gort-io/0.4.1/gort_0.4.1_amd64.deb
+    gort_package: https://s3.amazonaws.com/gort-io/0.5.2/gort_0.5.2_amd64.deb
     apt_packages:
       - nodejs
       - build-essential
