@@ -24,15 +24,15 @@
   },
   "dependencies": {
     "bluetooth-serial-port": "^1.2.6",
-    "bunyan": "^1.5.1",
-    "ibmiotf": "^0.2.2",
+    "bunyan": "1.8.0",
+    "ibmiotf": "0.2.12",
     "minimist": "^1.2.0",
-    "serialport": "^2.0.6",
+    "serialport": "2.1.0",
     "sphero": "noxxious/sphero.js",
     "underscore": "^1.8.3",
-    "yamljs": "^0.2.4"
+    "yamljs": "0.2.7"
   },
   "devDependencies": {
-    "eslint": "1.10.3"
+    "eslint": "2.7.0"
   }
 }
